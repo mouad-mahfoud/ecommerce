@@ -1,0 +1,34 @@
+.footer {
+  text-align: center;
+
+  span {
+
+    a {
+      color: #032042;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .fa {
+      color: #ee2424;
+      margin: 0 3px;
+      font-size: 1.5rem;
+      animation: pound 0.35s infinite alternate;
+      -webkit-animation: pound 0.35s infinite alternate;
+      -moz-animation: pound 0.35s infinite alternate;
+    }
+  }
+}
+
+
+@-webkit-keyframes pound {
+  to {
+    transform: scale(1.1);
+  }
+}
+
+@keyframes pound {
+  to {
+    transform: scale(1.1);
+  }
+}
