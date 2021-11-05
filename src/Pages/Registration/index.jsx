@@ -1,12 +1,13 @@
 import React from 'react';
 
 import './styles.scss'
+import Signup from "./components/Signup";
 
 const Registration = () => {
     return (
-        <div>
-            <h1>Registration</h1>
-        </div>
+        <>
+            <Signup />
+        </>
     );
 };
 
