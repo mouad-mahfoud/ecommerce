@@ -4,6 +4,7 @@ import './styles.scss'
 import FormInput from "../../../../components/Forms/FormInput";
 import Button from "../../../../components/Forms/Button";
 import {auth, handleUserProfile} from "../../../../firebase/utils";
+import AuthWraper from "../../../../components/AuthWraper";
 
 
 const initialState = {
@@ -54,11 +55,7 @@ const Signup = (props) => {
     }
 
     return (
-        <div className="signUp">
-            <h2>
-                Sign Up
-            </h2>
-
+        <AuthWraper title="Sign Up">
             {state.errors.length > 0 && (
                 <ul>
                     {state.errors.map((err, index) => (
@@ -79,7 +76,7 @@ const Signup = (props) => {
                            onChange={handleFormInputChange}/>
                 <Button type="submit">Register</Button>
             </form>
-        </div>
+        </AuthWraper>
     );
 }
 

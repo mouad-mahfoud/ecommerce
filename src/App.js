@@ -8,6 +8,7 @@ import Registration from "./Pages/Registration";
 import Login from "./Pages/Login";
 import MainLayout from "./layouts/MainLayout";
 import {auth, handleUserProfile} from "./firebase/utils";
+import ResetPassword from "./Pages/ResetPassword";
 
 function App() {
     let authListener = null;
@@ -47,6 +48,11 @@ function App() {
                 <Route path={'/login'} render={() => currentUser ? <Redirect to="/"/> : (
                     <MainLayout currentUser={currentUser}>
                         <Login/>
+                    </MainLayout>
+                )}/>
+                <Route path={'/reset-password'} render={() => (
+                    <MainLayout currentUser={currentUser}>
+                        <ResetPassword/>
                     </MainLayout>
                 )}/>
             </Switch>

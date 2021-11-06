@@ -4,7 +4,9 @@ import './styles.scss'
 import Button from "../../../../components/Forms/Button";
 import {auth, signInWithGoogle} from "../../../../firebase/utils";
 import FormInput from "../../../../components/Forms/FormInput";
-import { signInWithEmailAndPassword  } from "firebase/auth";
+import {signInWithEmailAndPassword} from "firebase/auth";
+import AuthWraper from "../../../../components/AuthWraper";
+import {Link} from "react-router-dom";
 
 const initialState = {
     email: '',
@@ -26,22 +28,18 @@ const SignIn = (props) => {
 
     const handleFormSubmit = async (event) => {
         event.preventDefault();
-        const { email, password } = state;
+        const {email, password} = state;
 
         try {
             await signInWithEmailAndPassword(auth, email, password);
             setState(initialState);
-        }
-        catch (err) {
+        } catch (err) {
             console.error(err.message)
         }
     }
 
     return (
-        <div className="signIn">
-            <h2>
-                Login
-            </h2>
+        <AuthWraper title="Sign In">
             <form onSubmit={handleFormSubmit}>
                 <FormInput type="email" name="email" value={state.email} placeholder="email" required
                            onChange={handleFormInputChange}/>
@@ -52,7 +50,12 @@ const SignIn = (props) => {
             <Button onClick={signInWithGoogle}>
                 Sign In with Google
             </Button>
-        </div>
+            <div className="links">
+                <Link to="/reset-password">
+                    Reset Password
+                </Link>
+            </div>
+        </AuthWraper>
     )
 }
 
