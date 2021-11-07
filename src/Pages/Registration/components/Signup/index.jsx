@@ -7,48 +7,36 @@ import {auth, handleUserProfile} from "../../../../firebase/utils";
 import AuthWraper from "../../../../components/AuthWraper";
 
 
-const initialState = {
-    displayName: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-    errors: []
-};
-
 const Signup = (props) => {
 
-    const [state, setState] = React.useState(initialState);
+    const [displayName, setDisplayName] = React.useState('');
+    const [email, setEmail] = React.useState('');
+    const [password, setPassword] = React.useState('');
+    const [confirmPassword, setConfirmPassword] = React.useState('');
+    const [errors, setErrors] = React.useState([]);
 
-    const handleFormInputChange = (event) => {
-        const {name, value} = event.target;
 
-        setState(prevState => ({
-            ...prevState,
-            [name]: value
-        }));
+    const resetForm = () => {
+        setDisplayName('');
+        setEmail('');
+        setPassword('');
+        setConfirmPassword('');
+        setErrors([]);
     }
 
     const handleFormSubmit = async (event) => {
         event.preventDefault();
-        const {
-            displayName,
-            email,
-            password,
-            confirmPassword,
-        } = state;
+
         if (password !== confirmPassword) {
             const err = ['Password don\'t match'];
-            setState(prevState => ({
-                ...prevState,
-                errors: err
-            }))
+            setErrors(err);
             return;
         }
 
         try {
             const {user} = await auth.createUserWithEmailAndPassword(email, password);
             await handleUserProfile(user, {displayName});
-            setState(initialState)
+            resetForm();
         } catch (e) {
             console.log(e.message)
         }
@@ -56,24 +44,24 @@ const Signup = (props) => {
 
     return (
         <AuthWraper title="Sign Up">
-            {state.errors.length > 0 && (
+            {errors.length > 0 && (
                 <ul>
-                    {state.errors.map((err, index) => (
+                    {errors.map((err, index) => (
                         <li key={index}>{err}</li>
                     ))}
                 </ul>
             )}
 
             <form onSubmit={handleFormSubmit}>
-                <FormInput type="text" name="displayName" value={state.displayName} placeholder="Full name" required
-                           onChange={handleFormInputChange}/>
-                <FormInput type="text" name="email" value={state.email} placeholder="Email" required
-                           onChange={handleFormInputChange}/>
-                <FormInput type="password" name="password" value={state.password} placeholder="Password" required
-                           onChange={handleFormInputChange}/>
-                <FormInput type="password" name="confirmPassword" value={state.confirmPassword} required
+                <FormInput type="text" name="displayName" value={displayName} placeholder="Full name" required
+                           onChange={e => setDisplayName(e.target.value)}/>
+                <FormInput type="text" name="email" value={email} placeholder="Email" required
+                           onChange={e => setEmail(e.target.value)}/>
+                <FormInput type="password" name="password" value={password} placeholder="Password" required
+                           onChange={e => setPassword(e.target.value)}/>
+                <FormInput type="password" name="confirmPassword" value={confirmPassword} required
                            placeholder="Confirm password"
-                           onChange={handleFormInputChange}/>
+                           onChange={e => setConfirmPassword(e.target.value)}/>
                 <Button type="submit">Register</Button>
             </form>
         </AuthWraper>

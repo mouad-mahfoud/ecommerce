@@ -8,31 +8,22 @@ import {signInWithEmailAndPassword} from "firebase/auth";
 import AuthWraper from "../../../../components/AuthWraper";
 import {Link} from "react-router-dom";
 
-const initialState = {
-    email: '',
-    password: ''
-};
-
 const SignIn = (props) => {
 
-    const [state, setState] = React.useState(initialState);
+    const [email, setEmail] = React.useState('');
+    const [password, setPassword] = React.useState('');
 
-    const handleFormInputChange = (event) => {
-        const {name, value} = event.target;
-
-        setState(prevState => ({
-            ...prevState,
-            [name]: value
-        }));
+    const resetForm = () => {
+        setEmail('');
+        setPassword('');
     }
-
+    
     const handleFormSubmit = async (event) => {
         event.preventDefault();
-        const {email, password} = state;
 
         try {
             await signInWithEmailAndPassword(auth, email, password);
-            setState(initialState);
+            resetForm();
         } catch (err) {
             console.error(err.message)
         }
@@ -41,10 +32,10 @@ const SignIn = (props) => {
     return (
         <AuthWraper title="Sign In">
             <form onSubmit={handleFormSubmit}>
-                <FormInput type="email" name="email" value={state.email} placeholder="email" required
-                           onChange={handleFormInputChange}/>
-                <FormInput type="password" name="password" value={state.password} placeholder="Password" required
-                           onChange={handleFormInputChange}/>
+                <FormInput type="email" name="email" value={email} placeholder="email" required
+                           onChange={e => setEmail(e.target.value)}/>
+                <FormInput type="password" name="password" value={password} placeholder="Password" required
+                           onChange={e => setPassword(e.target.value)}/>
                 <Button type="submit">LogIn</Button>
             </form>
             <Button onClick={signInWithGoogle}>

@@ -11,12 +11,13 @@ import MainLayout from "./layouts/MainLayout";
 import {auth, handleUserProfile} from "./firebase/utils";
 import ResetPassword from "./Pages/ResetPassword";
 import {setCurrentUser} from './redux/User/user.actions'
+import Dashboard from "./Pages/Dashboard";
+import WithAuth from "./hoc/WithAuth";
 
 const App = ({currentUser, setCurrentUser}) => {
-    let authListener = null;
 
     React.useEffect(() => {
-        authListener = auth.onAuthStateChanged(async userAuth => {
+        const authListener = auth.onAuthStateChanged(async userAuth => {
             if (!userAuth) {
                 setCurrentUser(null);
             } else {
@@ -30,7 +31,6 @@ const App = ({currentUser, setCurrentUser}) => {
                 });
             }
         });
-
         return () => authListener();
     }, []);
     return (
@@ -55,6 +55,13 @@ const App = ({currentUser, setCurrentUser}) => {
                     <MainLayout>
                         <ResetPassword/>
                     </MainLayout>
+                )}/>
+                <Route path={'/dashboard'} render={() => (
+                    <WithAuth>
+                        <MainLayout>
+                            <Dashboard/>
+                        </MainLayout>
+                    </WithAuth>
                 )}/>
             </Switch>
         </div>
